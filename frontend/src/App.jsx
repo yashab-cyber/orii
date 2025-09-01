@@ -1,15 +1,32 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
+import Login from './pages/Login';
+import DashboardLayout from './pages/dashboard/Layout';
+import DashHome from './pages/dashboard/Home';
+import DashProjects from './pages/dashboard/Projects';
+import DashUpdates from './pages/dashboard/Updates';
+import DashCertificates from './pages/dashboard/Certificates';
+import DashProfile from './pages/dashboard/Profile';
+import DashAdmin from './pages/dashboard/Admin';
+import AnimatedBackground from './components/AnimatedBackground';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import ResearchLabs from './pages/ResearchLabs';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import Projects from './pages/Projects';
 import Publications from './pages/Publications';
 import JoinUs from './pages/JoinUs';
 import SupportUs from './pages/SupportUs';
 import Contact from './pages/Contact';
+import Verify from './pages/Verify';
+import VerifyCertificate from './pages/VerifyCertificate';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import CybersecurityLab from './pages/labs/CybersecurityLab';
 import HardwareLab from './pages/labs/HardwareLab';
 import BioTechLab from './pages/labs/BioTechLab';
@@ -38,9 +55,13 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-white dark:bg-dark-900 text-gray-900 dark:text-gray-100">
-        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-        <main>
+      <div className="relative min-h-screen text-gray-900 dark:text-gray-100">
+        {/* Background */}
+        <AnimatedBackground />
+        {/* Foreground content */}
+        <div className="relative z-10">
+          <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+          <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -54,9 +75,25 @@ function App() {
             <Route path="/join-us" element={<JoinUs />} />
             <Route path="/support-us" element={<SupportUs />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/verify/:id" element={<VerifyCertificate />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+              <Route index element={<DashHome />} />
+              <Route path="projects" element={<DashProjects />} />
+              <Route path="updates" element={<DashUpdates />} />
+              <Route path="certificates" element={<DashCertificates />} />
+              <Route path="profile" element={<DashProfile />} />
+              <Route path="admin" element={<DashAdmin />} />
+            </Route>
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
           </Routes>
-        </main>
-        <Footer />
+          </main>
+          <Footer />
+        </div>
       </div>
     </Router>
   );
